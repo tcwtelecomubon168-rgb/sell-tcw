@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ใบราคาส่ง | TCW Telecom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&family=Prompt:wght@500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+  :root{
+    --navy:#0b2545; --blue:#13315c; --accent:#e63946; --gold:#f4a261;
+    --bg:#f3f5f9; --card:#fff; --line:#e3e8ef; --muted:#6b7a90; --text:#1d2939;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);font-size:16px}
+  header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:22px 16px 60px}
+  .wrap{max-width:960px;margin:0 auto}
+  .brand-row{display:flex;align-items:center;gap:12px}
+  .logo{width:48px;height:48px;border-radius:12px;background:#fff;color:var(--navy);display:grid;place-items:center;font:700 18px 'Prompt'}
+  .company{font:700 20px 'Prompt';line-height:1.2}
+  .company small{display:block;font:400 13px 'Sarabun';opacity:.8;margin-top:4px;white-space:pre-line}
+  .title{margin-top:18px;font:700 26px 'Prompt'}
+  .title span{color:var(--gold)}
+  .sub{opacity:.8;font-size:14px;margin-top:4px}
+
+  .panel{max-width:960px;margin:-40px auto 0;padding:0 12px}
+  .toolbar{background:var(--card);border-radius:14px;box-shadow:0 6px 20px rgba(11,37,69,.08);padding:14px}
+  .search{display:flex;gap:8px}
+  .search input{flex:1;border:1px solid var(--line);border-radius:10px;padding:11px 14px;font:inherit;outline:none}
+  .search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(19,49,92,.12)}
+  .btn{border:0;border-radius:10px;padding:0 14px;font:600 14px 'Sarabun';cursor:pointer;background:var(--navy);color:#fff;white-space:nowrap}
+  .btn.ghost{background:#eef2f7;color:var(--navy)}
+  .chips{display:flex;gap:8px;overflow-x:auto;margin-top:12px;padding-bottom:2px;scrollbar-width:none}
+  .chip{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font:600 14px 'Sarabun';cursor:pointer;color:var(--muted)}
+  .chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+  .chip b{font-weight:400;opacity:.7;margin-left:4px}
+  .status{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin:12px 4px}
+
+  .group{margin-bottom:18px}
+  .group h2{font:700 17px 'Prompt';color:var(--navy);margin:0 4px 8px;display:flex;align-items:center;gap:8px}
+  .group h2{gap:10px}
+  .blogo{display:inline-block;width:auto;max-width:120px;object-fit:contain;vertical-align:middle}
+  .chip .blogo{margin-right:2px}
+  .chip.on .blogo{background:#fff;border-radius:4px;padding:1px 3px}
+  .bmark{display:inline-flex;align-items:center;padding:0 .8em;border-radius:6px;background:var(--c);color:#fff;font-family:'Prompt';font-weight:700;letter-spacing:.3px;line-height:1}
+  .gname{font:600 14px 'Sarabun';color:var(--muted)}
+  .logo img{width:100%;height:100%;object-fit:contain;border-radius:12px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(11,37,69,.05)}
+  th{background:#eef2f7;color:var(--blue);font-weight:700;font-size:13px;text-align:right;padding:10px 12px}
+  th:first-child{text-align:left}
+  td{padding:11px 12px;border-top:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums}
+  td:first-child{text-align:left;font-weight:600}
+  td.ws{color:var(--accent);font-weight:700;font-size:17px}
+  td.rt{color:var(--muted)}
+  .note{display:block;font-weight:400;font-size:12.5px;color:#b5651d;margin-top:2px}
+  tr.hit td:first-child mark{background:#fff3c4;border-radius:3px}
+  .empty,.err{text-align:center;padding:40px 16px;color:var(--muted)}
+  .err{color:var(--accent)}
+  footer{text-align:center;font-size:12px;color:var(--muted);padding:24px 12px 40px}
+
+  @media (max-width:560px){
+    .title{font-size:22px}
+    th,td{padding:9px 8px}
+    td.ws{font-size:16px}
+    th.rt,td.rt{font-size:13px}
+  }
+  @media print{
+    header{padding:12px 0 8px;background:#fff!important;color:#000}
+    .title span{color:#000}
+    .toolbar,.status .btns{display:none}
+    .panel{margin-top:0}
+    table{box-shadow:none}
+    .group{break-inside:avoid-page}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand-row">
+      <div class="logo">TCW</div>
+      <div class="company" id="company">บริษัท ทีซีดับบลิวเทเลคอม จำกัด<small id="companyInfo"></small></div>
+    </div>
+    <div class="title" id="title">ใบราคาส่ง</div>
+    <div class="sub">ราคารวม VAT แล้ว · เรียน ท่านตัวแทนจำหน่าย</div>
+  </div>
+</header>
+
+<div class="panel">
+  <div class="toolbar">
+    <div class="search">
+      <input id="q" type="search" placeholder="🔍 ค้นหารุ่น เช่น A17, S26, Reno…" autocomplete="off">
+      <button class="btn ghost" onclick="window.print()">พิมพ์</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <div class="status">
+    <span id="stat">กำลังโหลดข้อมูล…</span>
+    <span class="btns"><button class="btn ghost" style="padding:6px 12px" onclick="load(false)">↻ รีเฟรช</button></span>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<footer id="foot">ข้อมูลอัปเดตอัตโนมัติจาก Google Sheet</footer>
+
+<script>
+/* ================== CONFIG ==================
+   Google Sheet > ไฟล์ > แชร์ > เผยแพร่ไปยังเว็บ
+   เลือกชีต "ใบราคาส่ง" + รูปแบบ "ค่าที่คั่นด้วยจุลภาค (.csv)" > เผยแพร่
+   แล้ววางลิงก์ที่ได้ใน CSV_URL ด้านล่าง
+================================================ */
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSOqmaOjlIeIbE41udOKbJ8_3beEmEerLyAgNT6hbja26aYkv0SFEhY-fuUmOvqK98d5cxJTV-cOEKY/pub?output=csv';   // ← วางลิงก์ CSV ที่เผยแพร่แล้วตรงนี้ (ขึ้นต้นด้วย https://docs.google.com/spreadsheets/d/e/...)
+const SHEET_ID   = '13L2wSxEDkiwotVzPhK6E0u7pt5M-f6mk0JpMavegBVg';  // สำรอง: ใช้เมื่อ CSV_URL ว่าง (ต้องแชร์ไฟล์แบบทุกคนที่มีลิงก์)
+const SHEET_NAME = 'ใบราคาส่ง';
+const AUTO_REFRESH_SEC = 60;  // เช็กราคาใหม่ทุกกี่วินาที (0 = ปิด)
+
+/* กลุ่มสินค้า: ใช้คอลัมน์ "ยี่ห้อ" ถ้ามี ไม่งั้นเดาจากชื่อรุ่น (เรียงตามลำดับที่ตรวจ) */
+const BRAND_RULES = [
+  [/^galaxy\s+tab/i,              'Samsung Tablet'],
+  [/^galaxy/i,                    'Samsung'],
+  [/^(nokia|hmd)/i,               'Nokia / HMD'],
+  [/^realme/i,                    'Realme'],
+  [/^(a\d|reno|find)/i,           'OPPO'],
+  [/^(v\d|x\d|y\d)/i,             'vivo'],
+  [/^(iphone|ipad)/i,             'Apple'],
+  [/^(redmi|xiaomi|poco)/i,       'Xiaomi'],
+];
+
+/* โลโก้: วางลิงก์รูป (PNG/SVG) ของแต่ละแบรนด์ เช่น ไฟล์จาก Google Drive ที่แชร์สาธารณะ หรือ URL รูปบนเว็บ
+   ถ้าเว้นว่าง จะแสดงเป็นป้ายชื่อแบรนด์สีประจำแบรนด์แทน */
+const COMPANY_LOGO = '';   // โลโก้บริษัท TCW (เว้นว่าง = แสดงตัวอักษร TCW)
+const BRAND_LOGOS = {
+  'Samsung':        '',
+  'Samsung Tablet': '',   // เว้นว่าง = ใช้โลโก้เดียวกับ Samsung
+  'Nokia / HMD':    '',
+  'Realme':         '',
+  'OPPO':           '',
+  'vivo':           '',
+  'Apple':          '',
+  'Xiaomi':         '',
+};
+const BRAND_COLORS = {
+  'Samsung':'#1428a0','Samsung Tablet':'#1428a0','Nokia / HMD':'#124191','Realme':'#d4a300',
+  'OPPO':'#1b7f55','vivo':'#415fff','Apple':'#333','Xiaomi':'#ff6900'
+};
+
+/* ================== CODE ================== */
+const logoUrl = b => {
+  let u = BRAND_LOGOS[b] || (b==='Samsung Tablet' ? BRAND_LOGOS['Samsung'] : '') || '';
+  // แปลงลิงก์แชร์ Google Drive เป็นลิงก์รูปโดยตรง
+  const m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([\w-]+)/);
+  return m ? `https://lh3.googleusercontent.com/d/${m[1]}` : u;
+};
+function brandMark(b, size){
+  const u = logoUrl(b), col = BRAND_COLORS[b] || '#13315c';
+  const badge = `<span class="bmark" style="--c:${col};font-size:${size*0.5}px;height:${size}px">${esc(b)}</span>`;
+  if (!u) return badge;
+  return `<img class="blogo" src="${esc(u)}" alt="${esc(b)}" style="height:${size}px" onerror="this.outerHTML=this.dataset.fb" data-fb="${esc(badge)}">`;
+}
+const $ = id => document.getElementById(id);
+let items = [], brand = 'ทั้งหมด';
+
+function parseCSV(text){
+  const rows=[]; let row=[], cur='', q=false;
+  for (let i=0;i<text.length;i++){
+    const c=text[i];
+    if (q){
+      if (c==='"'){ if (text[i+1]==='"'){cur+='"';i++;} else q=false; }
+      else cur+=c;
+    } else if (c==='"') q=true;
+    else if (c===','){ row.push(cur); cur=''; }
+    else if (c==='\n'||c==='\r'){
+      if (c==='\r'&&text[i+1]==='\n') i++;
+      row.push(cur); rows.push(row); row=[]; cur='';
+    } else cur+=c;
+  }
+  if (cur||row.length){ row.push(cur); rows.push(row); }
+  return rows.map(r=>r.map(v=>v.trim()));
+}
+
+const num = v => { const n = parseFloat(String(v).replace(/[^\d.\-]/g,'')); return isNaN(n)?null:n; };
+const fmt = n => n==null ? '-' : n.toLocaleString('th-TH',{maximumFractionDigits:0});
+const guessBrand = name => (BRAND_RULES.find(([re])=>re.test(name))||[,'อื่น ๆ'])[1];
+
+function extract(rows){
+  // หาแถวหัวตาราง (คอลัมน์ที่มีคำว่า "ชื่อสินค้า")
+  let h = -1, cName = -1;
+  rows.some((r,i)=>{ const j=r.findIndex(v=>v.replace(/\s/g,'')==='ชื่อสินค้า'); if(j>-1){h=i;cName=j;return true;} });
+  if (h<0) throw new Error('ไม่พบหัวตาราง "ชื่อสินค้า" ในชีต');
+
+  const hdr = rows[h].map(v=>v.replace(/\s/g,''));
+  const find = (re, d) => { const j = hdr.findIndex(v=>re.test(v)); return j>-1?j:d; };
+  const cBrand = find(/^ยี่ห้อ/, cName-1);
+  const cWs    = find(/ราคาส่ง/, cName+1);
+  const cRt    = find(/ราคาปลีก/, cName+2);
+  const cNote  = find(/หมายเหตุ/, cName+3);
+
+  // ข้อมูลส่วนหัว (ชื่อเดือน / ที่อยู่บริษัท)
+  const top = rows.slice(0,h).map(r=>r.find(v=>v)||'').filter(Boolean);
+  const title = top.find(t=>/ราคาส่งประจำเดือน/.test(t)) || top.find(t=>/ประจำเดือน/.test(t)) || '';
+  const company = top.filter(t=>/บริษัท|ที่อยู่|อำเภอ|จังหวัด|โทร/.test(t) && !/^บริษัท/.test(t));
+
+  let lastBrand = '';
+  const list = rows.slice(h+1).map(r=>{
+    const name = r[cName]||'';
+    if (!name) return null;
+    const b = (r[cBrand]||'').trim();
+    if (b) lastBrand = b;
+    return {
+      name,
+      brand: b || guessBrand(name) || lastBrand,
+      ws: num(r[cWs]), rt: num(r[cRt]),
+      note: r[cNote]||''
+    };
+  }).filter(x=>x && (x.ws!=null || x.rt!=null));
+
+  return { list, title, company };
+}
+
+function render(){
+  const q = $('q').value.trim().toLowerCase();
+  const terms = q.split(/\s+/).filter(Boolean);
+  const shown = items.filter(it =>
+    (brand==='ทั้งหมด' || it.brand===brand) &&
+    terms.every(t => (it.name+' '+it.brand+' '+it.note).toLowerCase().includes(t))
+  );
+
+  // chips
+  const counts = {}; items.forEach(it=>counts[it.brand]=(counts[it.brand]||0)+1);
+  const brands = ['ทั้งหมด', ...Object.keys(counts)];
+  $('chips').innerHTML = brands.map(b=>
+    `<button class="chip ${b===brand?'on':''}" data-b="${esc(b)}">${b!=='ทั้งหมด'&&logoUrl(b)?brandMark(b,16)+' ':''}${esc(b)}<b>${b==='ทั้งหมด'?items.length:counts[b]}</b></button>`
+  ).join('');
+
+  if (!shown.length){ $('list').innerHTML = '<div class="empty">ไม่พบรุ่นที่ค้นหา</div>'; return; }
+
+  const groups = {};
+  shown.forEach(it=>(groups[it.brand]=groups[it.brand]||[]).push(it));
+  const hl = s => { let o=esc(s); terms.forEach(t=>{ o=o.replace(new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'),'<mark>$1</mark>'); }); return o; };
+
+  $('list').innerHTML = Object.entries(groups).map(([g,arr])=>`
+    <section class="group">
+      <h2>${brandMark(g,28)}${logoUrl(g)?`<span class="gname">${esc(g)}</span>`:''}</h2>
+      <table>
+        <thead><tr><th>รุ่น</th><th>ราคาส่ง</th><th class="rt">ราคาปลีก</th></tr></thead>
+        <tbody>${arr.map(it=>`
+          <tr class="${terms.length?'hit':''}">
+            <td>${hl(it.name)}${it.note?`<span class="note">${esc(it.note)}</span>`:''}</td>
+            <td class="ws">${fmt(it.ws)}</td>
+            <td class="rt">${fmt(it.rt)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </section>`).join('');
+}
+
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let lastSig = '';
+const STORE_KEY = 'tcw_price_v1';
+function apply(res){
+  lastSig = res.sig;
+  try{
+    const { list, title, company } = extract(res.rows);
+    items = list;
+    if (title){ const t = title.replace(/\s+/g,' ').trim(); $('title').innerHTML = esc(t).replace(/(ประจำเดือน)\s*(.+)$/,'$1 <span>$2</span>'); document.title = t+' | TCW Telecom'; }
+    if (company.length) $('companyInfo').textContent = company.map(s=>s.replace(/\s+/g,' ').trim()).join('\n');
+    const upd = res.updated ? new Date(res.updated) : new Date();
+    $('stat').textContent = `${items.length} รายการ · อัปเดต ${upd.toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'})}`;
+    render();
+  }catch(e){ showErr(e.message); }
+}
+function sourceUrl(){
+  const bust = 't=' + Date.now();
+  if (CSV_URL) return CSV_URL + (CSV_URL.includes('?') ? '&' : '?') + bust;
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&headers=0&sheet=${encodeURIComponent(SHEET_NAME)}&${bust}`;
+}
+async function load(silent){
+  if (!silent && !items.length) $('stat').textContent = 'กำลังโหลดข้อมูล…';
+  try{
+    const res = await fetch(sourceUrl(), {cache:'no-store'});
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const text = await res.text();
+    if (/^\s*</.test(text)) throw new Error('ชีตยังไม่ได้เผยแพร่เป็น CSV');
+    if (text === lastSig) return;                      // ไม่มีการแก้ไข
+    const data = { rows: parseCSV(text), sig: text, updated: new Date().toISOString() };
+    apply(data);
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){}
+  }catch(e){
+    if (!items.length) showErr(e.message + ' — ตรวจสอบลิงก์ CSV_URL');
+  }
+}
+function showErr(msg){
+  $('stat').textContent = 'โหลดข้อมูลไม่สำเร็จ';
+  $('list').innerHTML = `<div class="err">⚠️ ${esc(msg)}</div>`;
+}
+
+if (COMPANY_LOGO) document.querySelector('.logo').innerHTML = `<img src="${esc(COMPANY_LOGO.replace(/^.*drive\.google\.com\/(?:file\/d\/|open\?id=)([\w-]+).*$/,'https://lh3.googleusercontent.com/d/$1'))}" alt="TCW">`;
+$('q').addEventListener('input', render);
+$('chips').addEventListener('click', e=>{ const b=e.target.closest('.chip'); if(b){ brand=b.dataset.b; render(); } });
+// แสดงราคาชุดล่าสุดที่จำไว้ในเครื่องทันที แล้วค่อยดึงราคาใหม่จากชีต
+try{ const c = JSON.parse(localStorage.getItem(STORE_KEY)||'null'); if (c && c.rows) apply(c); }catch(e){}
+load();
+if (AUTO_REFRESH_SEC>0) setInterval(()=>{ if(!document.hidden) load(true); }, AUTO_REFRESH_SEC*1000);
+</script>
+</body>
+</html>
